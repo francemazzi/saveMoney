@@ -16,14 +16,38 @@ model User {
 
   password Password?
   notes    Note[]
+  balances BalancesOnUsers[]
+
 }
 
 model Password {
   hash String
-
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 }
+
+model Balance  {
+  id String @id @default(cuid())
+  name String 
+  value Int 
+  description String?
+  category String?  
+  users BalancesOnUsers[]
+}
+
+
+//relations
+model BalancesOnUsers {
+  userId String
+  user User @relation(fields: [userId], references: [id]) 
+  balanceId String
+  balance Balance @relation(fields: [balanceId], references: [id])
+  assignedAt DateTime @default(now())
+  assignedBy String?
+  @@id([userId, balanceId])
+}
+
+
 
 model Note {
   id    String @id @default(cuid())
