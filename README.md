@@ -41,6 +41,16 @@
   npm run dev
   ```
 
+- When you want to update database:
+
+  ```sh
+  npx prisma db push
+  ```
+
+  ```sh
+  prisma generate
+  ```
+
 ## Deployment
 
 This Remix Stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
