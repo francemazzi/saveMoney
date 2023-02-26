@@ -16,7 +16,7 @@ model User {
 
   password Password?
   notes    Note[]
-  balances BalancesOnUsers[]
+  imports ImportsOnUsers[]
 
 }
 
@@ -26,40 +26,40 @@ model Password {
   userId String @unique
 }
 
-model Balance  {
+model Import  {
   id String @id @default(cuid())
   name String 
   value Int 
   description String?
   category String?  
-  users BalancesOnUsers[]
-  categories BalanceOnCategory[]
+  users ImportsOnUsers[]
+  categories ImportsOnCategory[]
 }
-model CategoryBalance {
+model CategoryImport {
   id String @id @default(cuid())
   name String @unique
   description String?
-  balances BalanceOnCategory[]
+  imports ImportsOnCategory[]
 }
 
 
 //relations
-model BalancesOnUsers {
+model ImportsOnUsers {
   userId String
   user User @relation(fields: [userId], references: [id]) 
-  balanceId String
-  balance Balance @relation(fields: [balanceId], references: [id])
+  importId String
+  imports Import @relation(fields: [importId], references: [id])
   assignedAt DateTime @default(now())
   assignedBy String?
-  @@id([userId, balanceId])
+  @@id([userId, importId])
 }
 
-model BalanceOnCategory {
-  balanceId String
-  balance Balance @relation(fields: [balanceId], references: [id]) 
+model ImportsOnCategory {
+  importId String
+  import Import @relation(fields: [importId], references: [id]) 
   categoryId String
-  state CategoryBalance @relation(fields: [categoryId], references: [id])
-  @@id([balanceId, categoryId])
+  category CategoryImport @relation(fields: [categoryId], references: [id])
+  @@id([importId, categoryId])
 }
 
 
