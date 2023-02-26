@@ -33,6 +33,13 @@ model Balance  {
   description String?
   category String?  
   users BalancesOnUsers[]
+  categories BalanceOnCategory[]
+}
+model CategoryBalance {
+  id String @id @default(cuid())
+  name String @unique
+  description String?
+  balances BalanceOnCategory[]
 }
 
 
@@ -47,6 +54,13 @@ model BalancesOnUsers {
   @@id([userId, balanceId])
 }
 
+model BalanceOnCategory {
+  balanceId String
+  balance Balance @relation(fields: [balanceId], references: [id]) 
+  categoryId String
+  state CategoryBalance @relation(fields: [categoryId], references: [id])
+  @@id([balanceId, categoryId])
+}
 
 
 model Note {
