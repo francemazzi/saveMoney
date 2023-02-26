@@ -6,7 +6,7 @@ interface NavbarInterface {
   pathName: string;
 }
 
-const Navbar: React.FC<NavbarInterface> = ({ email, pathName }) => {
+const Header: React.FC<NavbarInterface> = ({ email, pathName }) => {
   return (
     <header className="flex items-center justify-between bg-[#EDF1D6] p-4 text-[#40513B] shadow-md">
       <h1 className="text-3xl font-bold">
@@ -26,4 +26,4 @@ const Navbar: React.FC<NavbarInterface> = ({ email, pathName }) => {
   );
 };
 
-export default Navbar;
+export default Header;

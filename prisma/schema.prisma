@@ -28,8 +28,14 @@ model Password {
 
 model Import  {
   id String @id @default(cuid())
+  created_at DateTime @default(now())
   name String 
   value Int 
+  fixed Boolean?
+  entry Boolean
+  start_date DateTime?
+  update_date DateTime?
+  due_date DateTime?
   description String?
   category String?  
   users ImportsOnUsers[]
