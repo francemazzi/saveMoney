@@ -1,5 +1,8 @@
 import type { Import } from "@prisma/client";
-import type { CreateImportInterface } from "~/commons/type";
+import type {
+  CreateImportInterface,
+  UserImportInterface,
+} from "~/commons/type";
 import { prisma } from "~/db.server";
 
 /**
@@ -25,4 +28,41 @@ export async function createNewImport(request: CreateImportInterface) {
   } catch (e) {
     throw e;
   }
+}
+
+/**
+ * @description Find all import
+ * @returns an array containing all the imports found
+ */
+export async function getImports() {
+  try {
+    const imports = await prisma.import.findMany();
+    return imports || [];
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
+ * @description Assign an existent import to a user
+ * @interface UserImportInterface
+ * @param importId (cuid) - Import's id
+ * @param userId (cuid) - User's id
+ * @returns true if the process is succesfull
+ */
+export async function assignTaskToUser(request: UserImportInterface) {
+  await prisma.user.update({
+    where: {
+      id: request.userId,
+    },
+    data: {
+      imports: {
+        create: {
+          imports: {
+            connect: { id: request.importId },
+          },
+        },
+      },
+    },
+  });
 }

@@ -60,3 +60,25 @@ export async function verifyLogin(
 
   return userWithoutPassword;
 }
+
+/**
+ * @description Find all import that are assigned to a user
+ * @param id (cuid) - User's id from scheme
+ * @returns and array containing all the imports connected to the given user
+ */
+export async function getImportsFromUsers(id: User["id"]) {
+  try {
+    const imports = await prisma.import.findMany({
+      where: {
+        users: {
+          some: {
+            user: { id },
+          },
+        },
+      },
+    });
+    return imports || [];
+  } catch (e) {
+    throw e;
+  }
+}

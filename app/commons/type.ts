@@ -1,4 +1,4 @@
-import type { Import } from "@prisma/client";
+import type { Import, User } from "@prisma/client";
 
 export const category = [
   {
@@ -40,4 +40,9 @@ export interface CreateImportInterface {
   update_date?: Import["update_date"];
   due_date?: Import["due_date"];
   description?: Import["description"];
+}
+
+export interface UserImportInterface {
+  userId: User["id"];
+  importId: Import["id"];
 }

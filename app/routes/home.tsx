@@ -15,15 +15,22 @@ import { importValidator } from "~/commons/validation";
 import Header from "~/components/molecols/header";
 import Navbar from "~/components/molecols/navbar";
 import Select from "~/components/molecols/select";
-import { createNewImport } from "~/models/import.server";
+import Table from "~/components/organisms/tableCount";
+import { createNewImport, getImports } from "~/models/import.server";
 import { getNoteListItems } from "~/models/note.server";
+import { getImportsFromUsers } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 
+// type LoaderData = {
+//   imports: Awaited<ReturnType<typeof getImportsFromUsers>>;
+// };
+
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);
-  const noteListItems = await getNoteListItems({ userId });
-  return json({ noteListItems });
+  const importListItems = await getImports();
+
+  return json({ importListItems, userId });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -54,7 +61,8 @@ export async function action({ request }: ActionArgs) {
 }
 
 const Homepage = () => {
-  const data = useLoaderData<typeof loader>();
+  const { importListItems, userId } = useLoaderData<typeof loader>();
+
   const user = useUser();
 
   const [entry, setEntry] = useState(false);
@@ -66,7 +74,7 @@ const Homepage = () => {
       <Header email={user.email} pathName={path.pathname} />
       <Navbar />
       {path.pathname == "/home" ? (
-        <div className="flex  h-[50vh] w-full flex-col items-center justify-center">
+        <div className="flex   w-full flex-col items-center justify-center">
           <h1 className="p-2 text-[30px] font-bold">Aggiungi una spesa</h1>
           <ValidatedForm
             className="flex w-full flex-col items-center"
@@ -79,6 +87,7 @@ const Homepage = () => {
               name={"entry"}
               value={entry ? "true" : "false"}
             />
+            <input className="hidden" readOnly name={"userId"} value={userId} />
             <input
               name="import"
               type="text"
@@ -106,7 +115,7 @@ const Homepage = () => {
                 +
               </button>
               <button
-                // type="submit"
+                type="submit"
                 onClick={() => setEntry(false)}
                 className="h-[100px] w-[100px] rounded-full  bg-[#EDF1D6] p-2 text-[30px] font-bold text-[red] shadow-md hover:bg-[#b8bf91] focus:outline-none focus:ring focus:ring-[#edf1d665] active:bg-[#b8bf91] "
               >
@@ -114,6 +123,9 @@ const Homepage = () => {
               </button>
             </div>
           </ValidatedForm>
+          <div className="mt-[50px] flex w-full flex-col items-center">
+            <Table list={importListItems} />
+          </div>
         </div>
       ) : (
         <Outlet />
