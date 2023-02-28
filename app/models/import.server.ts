@@ -44,6 +44,22 @@ export async function getImports() {
 }
 
 /**
+ * @description Find  import from category import
+ * @param category - Imports category data
+ * @returns  import related to category or null
+ */
+export async function getCategoryFromImport(category: Import["category"]) {
+  try {
+    const imports = await prisma.import.findMany({
+      where: { category },
+    });
+    return imports || [];
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
  * @description Assign an existent import to a user
  * @interface UserImportInterface
  * @param importId (cuid) - Import's id

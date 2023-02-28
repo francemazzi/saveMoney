@@ -1,3 +1,4 @@
+import { Import } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
@@ -8,7 +9,7 @@ import {
   useMatches,
   useNavigate,
 } from "@remix-run/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ValidatedForm, validationError } from "remix-validated-form";
 import { category } from "~/commons/type";
 import { importValidator } from "~/commons/validation";
@@ -38,8 +39,6 @@ export async function action({ request }: ActionArgs) {
   const fieldValues = await importValidator.validate(formData);
   if (fieldValues.error) return validationError(fieldValues.error);
 
-  // const { import, entry, name, category} = fieldValues.data;
-
   try {
     let entryData;
     fieldValues.data.entry == "true" ? (entryData = true) : (entryData = false);
@@ -47,11 +46,11 @@ export async function action({ request }: ActionArgs) {
     const result = await createNewImport({
       name: fieldValues.data.name,
       value: fieldValues.data.import,
-      category: fieldValues.data.category,
+      category: fieldValues.data.categoryInput
+        ? fieldValues.data.categoryInput
+        : fieldValues.data.category,
       entry: entryData,
     });
-
-    console.log(result);
 
     return null;
   } catch (error) {
@@ -63,9 +62,32 @@ export async function action({ request }: ActionArgs) {
 const Homepage = () => {
   const { importListItems, userId } = useLoaderData<typeof loader>();
 
+  type Category = {
+    label: string;
+    value: string;
+  };
+
+  let categories: Category[] = [];
+
+  importListItems.map((data: any) => {
+    if (!categories.some((category) => category.value === data.category)) {
+      categories.push({ label: data.category, value: data.category });
+    }
+    return categories;
+  });
+
   const user = useUser();
 
   const [entry, setEntry] = useState(false);
+  // const [name, setName] = useState("");
+  // const [importo, setImporto] = useState("");
+  // const [categoryData, setCategory] = useState("");
+
+  // function handleSubmit(event: any) {
+  //   setName("");
+  //   setImporto("");
+  //   setCategory("");
+  // }
 
   const path = useLocation();
 
@@ -74,7 +96,7 @@ const Homepage = () => {
       <Header email={user.email} pathName={path.pathname} />
       <Navbar />
       {path.pathname == "/home" ? (
-        <div className="flex   w-full flex-col items-center justify-center">
+        <div className="flex  w-full flex-col items-center justify-center">
           <h1 className="p-2 text-[30px] font-bold">Aggiungi una spesa</h1>
           <ValidatedForm
             className="flex w-full flex-col items-center"
@@ -103,21 +125,21 @@ const Homepage = () => {
             />
             <h2>Seleziona la categoria:</h2>
             <div className="w-1/2">
-              <Select name={"category"} options={category} />
+              <Select name={"category"} options={categories} />
             </div>
             <h2>Inserisci se è un'entrata o un'uscita</h2>
             <div className="flex w-1/2 flex-row items-center justify-between">
               <button
                 type="submit"
                 onClick={() => setEntry(true)}
-                className="h-[100px] w-[100px] rounded-full  bg-[#EDF1D6] p-2 text-[30px] font-bold text-[green] shadow-md hover:bg-[#b8bf91] focus:outline-none focus:ring focus:ring-[#edf1d665] active:bg-[#b8bf91] "
+                className="flex h-[50px] w-[50px] flex-col items-center justify-center rounded-full bg-[#EDF1D6] p-2 text-center text-[30px] font-bold text-[green] shadow-md hover:bg-[#b8bf91] focus:outline-none focus:ring focus:ring-[#edf1d665] active:bg-[#b8bf91] lg:h-[100px] lg:w-[100px]"
               >
                 +
               </button>
               <button
                 type="submit"
                 onClick={() => setEntry(false)}
-                className="h-[100px] w-[100px] rounded-full  bg-[#EDF1D6] p-2 text-[30px] font-bold text-[red] shadow-md hover:bg-[#b8bf91] focus:outline-none focus:ring focus:ring-[#edf1d665] active:bg-[#b8bf91] "
+                className="flex  h-[50px] w-[50px] flex-col items-center justify-center rounded-full  bg-[#EDF1D6] p-2 text-center text-[30px] font-bold text-[red] shadow-md hover:bg-[#b8bf91] focus:outline-none focus:ring focus:ring-[#edf1d665] active:bg-[#b8bf91] lg:h-[100px] lg:w-[100px]"
               >
                 -
               </button>

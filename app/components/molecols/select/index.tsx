@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { ValidatedForm } from "remix-validated-form";
+import { importValidator } from "~/commons/validation";
 
 //utils
 import { useClickOutside } from "~/utils";
@@ -82,6 +84,20 @@ const Select: React.FC<ISelect> = ({
           opened ? "rounded-b-xl bg-[#EDF1D6] shadow-md " : "h-[0px]"
         }`}
       >
+        {/* <ValidatedForm
+          validator={importValidator}
+          method="post"
+          className="flex flex-row"
+        > */}
+        <input
+          type="text"
+          name="categoryInput"
+          placeholder="Inserisci una categoria nuova"
+          className="w-full"
+          id=""
+        />
+
+        {/* </ValidatedForm> */}
         {options?.map((option, i) => (
           <div
             key={i}

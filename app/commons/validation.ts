@@ -19,6 +19,7 @@ export const importValidator = withZod(
       message: "Campo non corretto" as string,
     }),
     category: z.any().optional(),
+    categoryInput: z.any().optional(),
     entry: z.any(),
   })
 );

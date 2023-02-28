@@ -3,28 +3,28 @@ import type { Import, User } from "@prisma/client";
 export const category = [
   {
     label: "Dinner",
-    value: 1,
+    value: "Dinner",
   },
   {
     label: "Fuel ⛽️",
-    value: 2,
+    value: "Fuel ⛽️",
   },
   {
     label: "Present 🎁",
-    value: 3,
+    value: "Present 🎁",
   },
   {
     label: "Plane 🚀",
-    value: 4,
+    value: "Plane 🚀",
   },
 
   {
     label: "Hotel 🏨",
-    value: 5,
+    value: "Hotel 🏨",
   },
   {
     label: "Lunch 🍱",
-    value: 6,
+    value: "Lunch 🍱",
   },
 ];
 
