@@ -84,11 +84,6 @@ const Select: React.FC<ISelect> = ({
           opened ? "rounded-b-xl bg-[#EDF1D6] shadow-md " : "h-[0px]"
         }`}
       >
-        {/* <ValidatedForm
-          validator={importValidator}
-          method="post"
-          className="flex flex-row"
-        > */}
         <input
           type="text"
           name="categoryInput"
@@ -97,7 +92,6 @@ const Select: React.FC<ISelect> = ({
           id=""
         />
 
-        {/* </ValidatedForm> */}
         {options?.map((option, i) => (
           <div
             key={i}
