@@ -18,6 +18,9 @@ export const importValidator = withZod(
     name: z.string().min(1, {
       message: "Campo non corretto" as string,
     }),
+    userId: z.string().min(1, {
+      message: "Campo non corretto" as string,
+    }),
     category: z.any().optional(),
     categoryInput: z.any().optional(),
     entry: z.any(),

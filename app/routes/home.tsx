@@ -17,7 +17,11 @@ import Header from "~/components/molecols/header";
 import Navbar from "~/components/molecols/navbar";
 import Select from "~/components/molecols/select";
 import Table from "~/components/organisms/tableCount";
-import { createNewImport, getImports } from "~/models/import.server";
+import {
+  assignImportToUser,
+  createNewImport,
+  getImports,
+} from "~/models/import.server";
 import { getNoteListItems } from "~/models/note.server";
 import { getImportsFromUsers } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
@@ -31,7 +35,10 @@ export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);
   const importListItems = await getImports();
 
-  return json({ importListItems, userId });
+  const listUserImport = await getImportsFromUsers(userId);
+  console.log(listUserImport);
+
+  return json({ importListItems, userId, listUserImport });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -51,6 +58,13 @@ export async function action({ request }: ActionArgs) {
         : fieldValues.data.category,
       entry: entryData,
     });
+    //assign import to user
+    if (result) {
+      await assignImportToUser({
+        userId: fieldValues.data.userId,
+        importId: result.id,
+      });
+    }
 
     return null;
   } catch (error) {
@@ -60,13 +74,14 @@ export async function action({ request }: ActionArgs) {
 }
 
 const Homepage = () => {
-  const { importListItems, userId } = useLoaderData<typeof loader>();
+  const { importListItems, userId, listUserImport } =
+    useLoaderData<typeof loader>();
 
   type Category = {
     label: string;
     value: string;
   };
-
+  const [costConfirm, setCostConfirm] = useState(false);
   let categories: Category[] = [];
 
   importListItems.map((data: any) => {
@@ -79,6 +94,7 @@ const Homepage = () => {
   const user = useUser();
 
   const [entry, setEntry] = useState(false);
+
   // const [name, setName] = useState("");
   // const [importo, setImporto] = useState("");
   // const [categoryData, setCategory] = useState("");
@@ -146,7 +162,12 @@ const Homepage = () => {
             </div>
           </ValidatedForm>
           <div className="mt-[50px] flex w-full flex-col items-center">
-            <Table list={importListItems} />
+            <Table
+              list={listUserImport}
+              onClick={() => {
+                setCostConfirm(true);
+              }}
+            />
           </div>
         </div>
       ) : (

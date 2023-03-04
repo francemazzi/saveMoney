@@ -1,5 +1,6 @@
 import type { Password, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { UserImportInterface } from "~/commons/type";
 
 import { prisma } from "~/db.server";
 
@@ -80,5 +81,25 @@ export async function getImportsFromUsers(id: User["id"]) {
     return imports || [];
   } catch (e) {
     throw e;
+  }
+}
+
+/**
+ * @description Get all task from user
+ * @returns An array of tasks assigned to sinngle logged user
+ */
+export async function getTaskFromUser(id: User["id"]) {
+  try {
+    await prisma.user.findMany({
+      where: {
+        imports: {
+          some: {
+            imports: { id },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
   }
 }

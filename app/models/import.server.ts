@@ -66,19 +66,24 @@ export async function getCategoryFromImport(category: Import["category"]) {
  * @param userId (cuid) - User's id
  * @returns true if the process is succesfull
  */
-export async function assignTaskToUser(request: UserImportInterface) {
-  await prisma.user.update({
-    where: {
-      id: request.userId,
-    },
-    data: {
-      imports: {
-        create: {
-          imports: {
-            connect: { id: request.importId },
+export async function assignImportToUser(request: UserImportInterface) {
+  try {
+    await prisma.user.update({
+      where: {
+        id: request.userId,
+      },
+      data: {
+        imports: {
+          create: {
+            imports: {
+              connect: { id: request.importId },
+            },
           },
         },
       },
-    },
-  });
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
 }

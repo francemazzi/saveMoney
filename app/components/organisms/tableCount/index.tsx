@@ -10,14 +10,16 @@ interface ImportData {
   name: string;
   value: number;
   entry?: boolean;
+  confirmation?: boolean;
   category?: string | null;
   date?: any;
 }
 interface ImportList {
   list: ImportData[];
+  onClick?: () => void;
 }
 
-const Table: React.FC<ImportList> = ({ list }) => {
+const Table: React.FC<ImportList> = ({ list, onClick }) => {
   return (
     <div className="  grid max-h-40 grid-cols-4 items-start  overflow-x-scroll rounded-lg bg-[#edf1d6b0] p-2 shadow-md">
       {/* TITLE */}
@@ -42,9 +44,13 @@ const Table: React.FC<ImportList> = ({ list }) => {
                       {dataList.entry ? "+" : "-"} {dataList.value} €
                     </p>
                   ) : (
-                    <button className="rounded-md bg-white p-2 shadow-md hover:p-3">
-                      Conferma
-                    </button>
+                    <p className="p-2 ">{dataList.date}</p>
+                    // <button
+                    //   onClick={onClick}
+                    //   className="rounded-md bg-white p-2 shadow-md hover:p-3"
+                    // >
+                    //   Conferma
+                    // </button>
                   )}
                 </div>
               );

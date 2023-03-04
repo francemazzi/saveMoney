@@ -6,21 +6,23 @@ import CSVReader from "react-csv-reader";
 import csv from "csv";
 import Papa from "papaparse";
 import { csvToArray } from "./functions";
+import TableData from "~/components/organisms/table";
 
-interface uploadFileInterface {
+export interface uploadFileInterface {
   file: File;
   errors: FileError[];
 }
 const csvReaderStyles = {
   display: "flex",
+  // height: "5 rem",
+  // opacity: "0",
+  width: "full",
   justify: "center",
   alignItems: "center",
-  borderRadius: "0.5rem",
   backgroundColor: "#edf1d6",
-  padding: "2rem",
   boxShadow: "rgba(0, 0, 0, 0.1)",
   overflow: "hidden",
-  marginTop: "50px",
+  marginTop: "10px",
 };
 
 const Balance = () => {
@@ -38,8 +40,23 @@ const Balance = () => {
     []
   );
 
+  const [csvFiles, setCsvFiles] = useState();
   const [files, setFiles] = useState<uploadFileInterface[]>([]);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  // ANY PACKAGE TEST
+  const submit = () => {
+    try {
+      const file = csvFiles;
+      const reader = new FileReader();
+      console.log(reader);
+      reader.onload = function (e) {
+        const text = e.target?.result;
+        console.log("text", text);
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col items-center ">
@@ -48,26 +65,22 @@ const Balance = () => {
           Analizza i bilanci e scarica i dati
         </h1>
       </div>
-      <div
-        className="flex h-[100px] items-center rounded-lg bg-[#EDF1D6] p-2 shadow-md"
-        {...getRootProps()}
-      >
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
-        )}
+
+      <div className="flex  flex-col items-center rounded-lg bg-[#EDF1D6] p-2 shadow-md">
+        <p className="mt-2">CLICCA QUI PER IMPORTARE IL TUO FILE</p>
+        <CSVReader
+          cssClass="csv-reader-input"
+          parserOptions={{
+            header: true,
+            skipEmptyLines: true,
+          }}
+          onFileLoaded={(singleFile) => setFiles(singleFile)}
+          inputStyle={csvReaderStyles}
+        />
       </div>
-      <CSVReader
-        cssClass="csv-reader-input"
-        parserOptions={{
-          header: true,
-          skipEmptyLines: true,
-        }}
-        onFileLoaded={(singleFile) => console.log("singleFile", singleFile)}
-        inputStyle={csvReaderStyles}
-      />
+      <div className="mt-4">
+        {files ? <TableData file={files} list={[]} /> : ""}
+      </div>
     </div>
   );
 };
