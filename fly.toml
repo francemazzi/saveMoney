@@ -1,4 +1,4 @@
-app = "saveMoney-5987"
+app = "savemoney-5987"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
