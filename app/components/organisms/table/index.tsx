@@ -27,7 +27,7 @@ const TableData: React.FC<ImportList> = ({ list, file }) => {
   console.log("TitleOfKey", TitleOfKey);
 
   useEffect(() => {
-    const colTitle = file.reduce((acc, obj) => {
+    const colTitle = file.reduce((acc: any, obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (!acc.includes(key)) {
           acc.push(key);
