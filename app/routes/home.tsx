@@ -1,17 +1,8 @@
-import { Import } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Link,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useMatches,
-  useNavigate,
-} from "@remix-run/react";
-import React, { useRef, useState } from "react";
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import React, { useState } from "react";
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { category } from "~/commons/type";
 import { importValidator } from "~/commons/validation";
 import Header from "~/components/molecols/header";
 import Navbar from "~/components/molecols/navbar";
@@ -22,7 +13,6 @@ import {
   createNewImport,
   getImports,
 } from "~/models/import.server";
-import { getNoteListItems } from "~/models/note.server";
 import { getImportsFromUsers } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
@@ -36,7 +26,6 @@ export async function loader({ request }: LoaderArgs) {
   const importListItems = await getImports();
 
   const listUserImport = await getImportsFromUsers(userId);
-  console.log(listUserImport);
 
   return json({ importListItems, userId, listUserImport });
 }
