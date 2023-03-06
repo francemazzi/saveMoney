@@ -2,7 +2,6 @@ import { Import } from "@prisma/client";
 import { type } from "os";
 import React, { useEffect, useState } from "react";
 import { p } from "vitest/dist/index-2dd51af4";
-import { uploadFileInterface } from "~/routes/home/balance";
 
 const TITLE_TABLE = ["Nome", "Categoria", "Importo", "Data"];
 
