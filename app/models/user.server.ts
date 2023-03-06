@@ -85,8 +85,8 @@ export async function getImportsFromUsers(id: User["id"]) {
 }
 
 /**
- * @description Get all task from user
- * @returns An array of tasks assigned to sinngle logged user
+ * @description Get all import from user
+ * @returns An array of imports assigned to sinngle logged user
  */
 export async function getTaskFromUser(id: User["id"]) {
   try {
