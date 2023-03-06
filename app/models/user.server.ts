@@ -88,7 +88,7 @@ export async function getImportsFromUsers(id: User["id"]) {
  * @description Get all import from user
  * @returns An array of imports assigned to sinngle logged user
  */
-export async function getTaskFromUser(id: User["id"]) {
+export async function getImportFromUser(id: User["id"]) {
   try {
     await prisma.user.findMany({
       where: {
