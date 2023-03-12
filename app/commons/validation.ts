@@ -44,6 +44,8 @@ export const adminValidator = withZod(
     id: z.string().min(1, {
       message: "Campo non corretto" as string,
     }),
-    admin: z.any().optional(),
+    admin: z.string().min(1, {
+      message: "Campo non corretto" as string,
+    }),
   })
 );
