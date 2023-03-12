@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
+  const email = "francemazzi@gmail.com";
+  const admin = true;
 
   // cleanup the existing database
   await prisma.user.delete({ where: { email } }).catch(() => {
@@ -24,13 +25,10 @@ async function seed() {
     },
   });
 
-  await prisma.note.create({
-    data: {
-      title: "My first note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
+  // await prisma.user.update({where: {email}, data: {
+  //  email,
+  //  admin,
+  // }})
 
   await prisma.note.create({
     data: {

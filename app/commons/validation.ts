@@ -26,3 +26,24 @@ export const importValidator = withZod(
     entry: z.any(),
   })
 );
+export const settingsValidator = withZod(
+  z.object({
+    name: z.string().min(1, {
+      message: "Campo non corretto" as string,
+    }),
+    surname: z.string().min(1, {
+      message: "Campo non corretto" as string,
+    }),
+    emailSetiAdmin: z.any().optional(),
+    admin: z.any().optional(),
+  })
+);
+
+export const adminValidator = withZod(
+  z.object({
+    id: z.string().min(1, {
+      message: "Campo non corretto" as string,
+    }),
+    admin: z.any().optional(),
+  })
+);

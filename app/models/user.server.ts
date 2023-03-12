@@ -103,3 +103,16 @@ export async function getImportFromUser(id: User["id"]) {
     console.log(error);
   }
 }
+
+/**
+ * @description Find all users
+ * @returns an array containing all the users found
+ */
+export async function getUsers() {
+  try {
+    const users = await prisma.user.findMany();
+    return users || [];
+  } catch (e) {
+    throw e;
+  }
+}

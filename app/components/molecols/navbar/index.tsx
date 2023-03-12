@@ -14,6 +14,10 @@ const Navdata = [
     name: "Analisi",
     to: "list",
   },
+  {
+    name: "Settings",
+    to: "settings",
+  },
 ];
 
 const Navbar = () => {
