@@ -149,14 +149,14 @@ const Settings = () => {
               name="id"
               type="text"
               defaultValue={obj?.id}
-              className="hidden"
+              // className="hidden"
               readOnly
             />
             <input
               name="admin"
               type="text"
               defaultValue={obj.isAdmin ? "true" : "false"}
-              className="hidden"
+              // className="hidden"
               readOnly
             />
             {newUser.map((data, index) => {
