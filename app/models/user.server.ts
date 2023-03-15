@@ -1,6 +1,6 @@
 import type { Password, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { UserImportInterface } from "~/commons/type";
+import { UpdateUserIntr, UserImportInterface } from "~/commons/type";
 
 import { prisma } from "~/db.server";
 
@@ -112,6 +112,28 @@ export async function getUsers() {
   try {
     const users = await prisma.user.findMany();
     return users || [];
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
+ * @description Update data of an user
+ * @interface UpdateUserInterface
+ * @param field (string) - The field is the name tha has to be updated
+ * @param value (any) - It's the value to be updated
+ * @param id (cuid) - It's the ID of the USER
+ * @returns You will get true if it's all ok
+ */
+export async function updateUserData(request: UpdateUserIntr) {
+  try {
+    await prisma.user.update({
+      where: { id: request.id },
+      data: {
+        [request.field]: request.value,
+      },
+    });
+    return true;
   } catch (e) {
     throw e;
   }

@@ -5,35 +5,41 @@ import { adminValidator } from "~/commons/validation";
 type Props = {
   idNum: string;
   admin: boolean;
-  onClickButton: (e: any) => {};
+  email: string;
 };
 
-interface UserDataInterface {
-  id: string;
-  isAdmin?: boolean;
-}
-
-function RadioButton({ idNum, admin, onClickButton }: Props) {
+function RadioButton({ idNum, admin, email }: Props) {
   const [adminRadio, setAdminRadio] = useState(admin);
 
-  // const userData: UserDataInterface = {
-  //   id: idNum,
-  // };
+  const onClickButton = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    let button = e.target as HTMLButtonElement;
 
-  // const onClickButton = (
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) => {
-  //   let button = e.target as HTMLButtonElement;
-
-  //   if (button.id == "admin") {
-  //     setAdminRadio(true);
-  //   } else {
-  //     setAdminRadio(false);
-  //   }
-  // };
+    if (button.id == "admin") {
+      setAdminRadio(true);
+    } else {
+      setAdminRadio(false);
+    }
+  };
 
   return (
-    <div className="flex flex-row items-center justify-center">
+    <div
+      // validator={adminValidator}
+      // method="post"
+      className="flex flex-row items-center justify-center"
+    >
+      {/* hidden input to send value to action */}
+      <input name="id" type="text" value={idNum} className="hidden" readOnly />
+      <input
+        name="admin"
+        type="text"
+        value={adminRadio ? "true" : "false"}
+        className="hidden"
+        readOnly
+      />
+      <p className="m-2 p-2 text-[black]">{email}</p>
+      <button className="rounded-md p-2 shadow-md">Elimina</button>
       <button
         id="admin"
         className={`mx-3 h-[30px] w-[30px] rounded-full ${
