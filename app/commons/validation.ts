@@ -28,14 +28,21 @@ export const importValidator = withZod(
 );
 export const settingsValidator = withZod(
   z.object({
-    name: z.string().min(1, {
+    userId: z.string().min(1, {
       message: "Campo non corretto" as string,
     }),
-    surname: z.string().min(1, {
-      message: "Campo non corretto" as string,
-    }),
-    emailSetiAdmin: z.any().optional(),
-    admin: z.any().optional(),
+    nome: z
+      .string()
+      .min(1, {
+        message: "Campo non corretto" as string,
+      })
+      .optional(),
+    cognome: z
+      .string()
+      .min(1, {
+        message: "Campo non corretto" as string,
+      })
+      .optional(),
   })
 );
 
