@@ -46,3 +46,9 @@ export interface UserImportInterface {
   userId: User["id"];
   importId: Import["id"];
 }
+
+export interface UpdateUserIntr {
+  id: User["id"];
+  field: string;
+  value: any;
+}
