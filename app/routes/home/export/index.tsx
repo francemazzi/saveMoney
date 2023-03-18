@@ -6,8 +6,11 @@ import CSVReader from "react-csv-reader";
 import csv from "csv";
 import Papa from "papaparse";
 import { csvToArray } from "../../../commons/functions";
-import TableData from "~/components/organisms/table";
+import TableData, { ImportList } from "~/components/organisms/table";
 
+interface CsvData {
+  [key: string]: string;
+}
 export interface uploadFileInterface {
   file: File;
   errors: FileError[];
@@ -45,12 +48,14 @@ function Export({}: Props) {
   const [csvFiles, setCsvFiles] = useState();
   const [files, setFiles] = useState<uploadFileInterface[]>([]);
 
+  //TODO: create a data pass
+  const fileData: any = files;
+
   // ANY PACKAGE TEST
   const submit = () => {
     try {
       const file = csvFiles;
       const reader = new FileReader();
-      console.log(reader);
       reader.onload = function (e) {
         const text = e.target?.result;
         console.log("text", text);
@@ -81,7 +86,7 @@ function Export({}: Props) {
         />
       </div>
       <div className="mt-4">
-        {files ? <TableData file={files} list={[]} /> : ""}
+        {files ? <TableData file={fileData} list={[]} /> : ""}
       </div>
     </div>
   );

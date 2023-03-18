@@ -1,11 +1,6 @@
 import { Import } from "@prisma/client";
 import { type } from "os";
 import React, { useEffect, useState } from "react";
-import { p } from "vitest/dist/index-2dd51af4";
-
-const TITLE_TABLE = ["Nome", "Categoria", "Importo", "Data"];
-
-const confirmCost = false;
 
 interface ImportData {
   name: string;
@@ -15,18 +10,28 @@ interface ImportData {
   date?: any;
   file?: any;
 }
-interface ImportList {
-  list: ImportData[];
-  file?: any;
+//ImportList.file?: CsvData[] | undefined
+export interface CsvData {
+  [key: string]: string;
+}
+export interface ImportList {
+  list?: ImportData[];
+  file?: CsvData[];
+}
+
+function formatCellValue(value: any): string {
+  if (typeof value === "string" && value.length > 10) {
+    return `${value.slice(0, 5)}...${value.slice(-5)}`;
+  } else {
+    return value.toString();
+  }
 }
 
 const TableData: React.FC<ImportList> = ({ list, file }) => {
   const [TitleOfKey, setTitleOfKey] = useState([]);
-  console.log("file", file);
-  console.log("TitleOfKey", TitleOfKey);
 
   useEffect(() => {
-    const colTitle = file.reduce((acc: any, obj: any) => {
+    const colTitle = file?.reduce((acc: any, obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (!acc.includes(key)) {
           acc.push(key);
@@ -34,42 +39,43 @@ const TableData: React.FC<ImportList> = ({ list, file }) => {
       });
       return acc;
     }, []);
-    console.log("colTitle", colTitle);
     setTitleOfKey(colTitle);
   }, [file]);
 
   return (
-    <div className="  grid max-h-40 grid-cols-4 items-start  overflow-x-scroll rounded-lg bg-[#edf1d6b0] p-2 shadow-md">
+    <div className="m-2">
       {/* TITLE */}
-      {/* {TitleOfKey.map((data, index) => {
-        return (
-          <div
-            className="flex flex-col items-center justify-center "
-            key={index}
-          >
-            <h3 className="z-1 sticky top-0 w-full bg-[#ffffffb1] text-center text-[18px] font-bold">
-              {data}
-            </h3>
-            {file.map((dataList, index) => {
-              for (let i = 0; i <= TitleOfKey.length; i++) {
-                if (data == TitleOfKey[i]) {
-                  //   console.log(dataList?.TitleOfKey[i]);
-                  //   return (
-                  //     <p>
-                  //       {dataList?.TitleOfKey[i] ? dataList?.TitleOfKey[i] : ""}
-                  //     </p>
-                  //   );
-                }
-              }
-              //   return (
-              //     <div className="m-2 flex flex-col" key={index}>
-
-              //     </div>
-              //   );
+      <table className="h-full w-full table-fixed overflow-x-auto whitespace-nowrap rounded-lg bg-[#edf1d6b0]">
+        <thead>
+          <tr>
+            {TitleOfKey.map((data, index) => {
+              return (
+                <th key={index} className="p-2 text-[12px] text-[black] ">
+                  <p className="whitespace-nowrap">{data}</p>
+                </th>
+              );
             })}
-          </div>
-        );
-      })} */}
+          </tr>
+        </thead>
+        <tbody>
+          {file?.map((data, index) => {
+            return (
+              <tr
+                key={index}
+                className="m-2 h-[25px] border-t border-slate-300 transition-all duration-75 "
+              >
+                {Object.keys(data).map((key) => (
+                  <td className="text-center" key={key}>
+                    {data[key].length > 10
+                      ? formatCellValue(data[key])
+                      : data[key]}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
