@@ -57,20 +57,20 @@ const BalanceCard: React.FC<BalanceInterface> = ({ balance }) => {
   const sommaPositivi = summ(positiveValues);
   const sommaNegativi = summ(negativeValues);
 
-  const differenza = 9;
+  const differenza = sommaPositivi - sommaNegativi;
 
   return (
     <div className="flex h-[400px] w-1/2 flex-col rounded-lg shadow-lg">
-      <div className="flex h-1/2 flex-col items-center justify-center rounded-t-lg bg-[#C7E8CA] text-[35px] font-bold">
-        <h1>{differenza > 0 ? "+" + differenza : "-" + differenza} €</h1>
+      <div className="flex h-1/2 flex-col items-center justify-center rounded-t-lg bg-[#c7e8ca59] text-[35px] font-bold">
+        <h1>{differenza > 0 ? "+" + differenza : differenza} €</h1>
       </div>
       <div className="flex h-1/2 flex-row items-center justify-center rounded-b-lg">
-        <div className="flex h-full w-1/2 flex-col justify-center rounded-bl-lg bg-[#C7E8CA]">
+        <div className="flex h-full w-1/2 flex-col justify-center rounded-bl-lg bg-[#c7e8ca59]">
           <h2 className=" justify-center   text-center text-[25px] font-semibold">
             + {sommaPositivi} €
           </h2>
         </div>
-        <div className="flex h-full w-1/2 flex-col justify-center rounded-br-lg bg-[#DF2E38] ">
+        <div className="flex h-full w-1/2 flex-col justify-center rounded-br-lg bg-[#df2e376e] ">
           <h2 className=" text-center text-[25px] font-semibold">
             - {sommaNegativi} €
           </h2>
